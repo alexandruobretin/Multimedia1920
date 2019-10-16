@@ -26,9 +26,9 @@ function basic_operations() {
   console.log("content of obj is: ", obj["age"], obj["firstName"]);
   console.log("type of obj is: ", typeof obj);
 
-  var a = 3;
-  var b = 3.0;
-  var c = "3";
+  var a = 4;
+  var b = 4.0;
+  var c = "4";
 
   console.log("type of null", typeof null);
   console.log("type of undefined", typeof undefined);
