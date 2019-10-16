@@ -1,0 +1,71 @@
+header {
+  font-size: 2em;
+  font-family: calibri;
+  text-align: center;
+  background-color: lightseagreen;
+  color: white;
+  font-weight: bold;
+  margin: -2% -4% 3% -4%;
+  padding: 2% 0% 2% 0%;
+}
+
+footer {
+  font-size: 1.5em;
+  font-family: calibri;
+  text-align: center;
+  background-color: lightseagreen;
+  color: white;
+  margin: 4% -4% 0% -4%;
+  padding: 2% 0% 2% 0%;
+}
+
+table thead tr {
+  border-bottom: 1px solid black;
+}
+
+body {
+  margin-left: 3%;
+  margin-right: 3%;
+  overflow-x: none;
+}
+
+img {
+  max-width: 20%;
+  max-height: 20%;
+}
+
+.container * {
+  margin-left: 2%;
+  margin-right: 2%;
+}
+
+.container {
+  border: 0.15em solid lightseagreen;
+  border-radius: 1%;
+  font-family: calibri;
+}
+
+nav {
+  margin-top: 2%;
+}
+
+label {
+  display: inline-block;
+}
+
+.custom_h2 {
+  border-bottom: 1px solid gray;
+  text-align: center;
+}
+
+#pizzaForm {
+  font-weight: bold;
+  margin-bottom: 2%;
+}
+
+ul li {
+  border-bottom: 1px solid green;
+  padding: 2%;
+  margin-bottom: 1%;
+  list-style-type: none;
+}
