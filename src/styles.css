@@ -1,3 +1,4 @@
+/* css simple selectors - html tags */
 header {
   font-size: 2em;
   font-family: calibri;
@@ -19,14 +20,18 @@ footer {
   padding: 2% 0% 2% 0%;
 }
 
-table thead tr {
-  border-bottom: 1px solid black;
-}
-
 body {
   margin-left: 3%;
   margin-right: 3%;
-  overflow-x: none;
+  overflow-x: none; /* no horizontal scorll bar */
+}
+
+nav {
+  margin-top: 2%;
+}
+
+label {
+  display: inline-block; /* labels are displayed on the same line with input nodes */
 }
 
 img {
@@ -34,9 +39,39 @@ img {
   max-height: 20%;
 }
 
-.container * {
-  margin-left: 2%;
-  margin-right: 2%;
+/* css attribute selector */
+caption[name="tableCaption"] {
+  background-color: gray;
+  margin: 0% -1% 0% -1%;
+  color: white;
+}
+
+/* css pseudo-class selector example - :hover */
+img:hover {
+  opacity: 0.5; /* when hovered, image will become 50% transparent */
+}
+
+/* css pseudo-element selector example - ::selection */
+td::selection {
+  background-color: yellowgreen;
+}
+
+/* css descendent selector */
+ul li {
+  border-bottom: 1px solid green;
+  padding: 2%;
+  margin-bottom: 1%;
+  list-style-type: none; /* remove the dots from list items */
+}
+
+table thead tr {
+  border-bottom: 1px solid black;
+}
+
+/* css class selector */
+.custom_h2 {
+  border-bottom: 1px solid gray;
+  text-align: center;
 }
 
 .container {
@@ -45,27 +80,13 @@ img {
   font-family: calibri;
 }
 
-nav {
-  margin-top: 2%;
+.container * {
+  margin-left: 2%;
+  margin-right: 2%;
 }
 
-label {
-  display: inline-block;
-}
-
-.custom_h2 {
-  border-bottom: 1px solid gray;
-  text-align: center;
-}
-
+/* css id selector */
 #pizzaForm {
   font-weight: bold;
   margin-bottom: 2%;
-}
-
-ul li {
-  border-bottom: 1px solid green;
-  padding: 2%;
-  margin-bottom: 1%;
-  list-style-type: none;
 }

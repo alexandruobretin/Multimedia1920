@@ -50,7 +50,14 @@ function order_pizza() {
   var tr = document.createElement("tr");
 
   var name_td = document.createElement("td");
-  var selectNode = document.getElementById("formName");
+  var selectNode = document.getElementById("formName"); // we get the actual node
+  /* 
+    on that node we have 2 elements we care about
+    - 1 is the inner HTML, which is the human readable pizza name
+    - 2 is value, where we set the key we used in pizza_prices object above
+
+    To search in pizza_prices we need value, to add a new tr we need the innerHTML
+  */
   name_td.innerHTML = selectNode.options[selectNode.selectedIndex].innerHTML;
   var pizza_key = selectNode.options[selectNode.selectedIndex].value;
 
