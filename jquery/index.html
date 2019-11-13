@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>jQuery AJAX tutorial</title>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="src/styles.css"/>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script>
+	$(document).ready(function(){
+		var pizza_prices = {
+			diavola: 10,
+			qf: 14,
+			qs: 8,
+			margherita: 7
+		}
+		
+		$.ajax({
+			type: 'GET',
+			dataType: 'json',
+			url: 'http://localhost:8000/api/orders',
+			headers: {
+				'Access-Control-Allow-Origin' : "*"
+			},
+			success: function(result){
+				$.each(result, function(i, order){
+					$('#tableBody').append('<tr><td>' + order.name + '</td><td>' + order.quantity + '</td><td>' + order.price + '</td><td>' + order.total + '</td></tr>')
+				})
+			},
+			error: function(){
+				alert("Error loading orders");
+			}
+		
+		});
+		
+		$('#orderBtn').on('click', function(){
+			pizza_key = $('formName option:selected').text()
+			
+			var obj = {
+				name: $('#formName option:selected').text(),
+				quantity: parseInt($('#formQuantity').val(), 10),
+				price: pizza_types[pizza_key],
+				total: $('#formQuantity').val() * pizza_prices[pizza_key]
+			}		
+
+			
+			$.ajax({
+				type: 'POST',
+				dataType: 'json',
+				url: 'http://localhost:8000/api/orders',
+				headers: {
+					'Access-Control-Allow-Origin': '*'
+				},
+				data: {orders: JSON.stringify(obj)},
+				success: function(resp){
+					console.log(resp)
+					tokens = resp['success'].split('_');
+					$('#tableBody').append('<tr><td>' + tokens[0] + '</td><td>' + tokens[1] + '</td><td>' + tokens[2] + '</td><td>' + tokens[3] + '</td></tr>');
+				},
+				error: function(data){
+					console.log(data)
+					alert('error saving data')
+				}
+					
+			})
+		})
+		
+	});
+  
+   	$(document).ready(function(){
+	  console.log('success');	
+
+	  var pizza_prices = {
+		diavola: 10,
+		qf: 14,
+		qs: 8,
+		margherita: 7
+	  };	  
+	  
+	  $.ajax({
+	    type: 'GET',
+	    url: 'http://localhost:8000/api/orders',
+		dataTye: 'json',
+	    headers: {
+		'Access-Control-Allow-Origin': '*'
+	    },
+	    success: function(orders) {
+	      $.each(orders, function(i, order) {
+		     $('#tableBody').append('<tr><td>' + order.name + '</td><td>' + order.quantity + '</td><td>' + order.price + '</td><td>' + order.total + '</td></tr>');
+	      })
+	    },
+		error: function(){
+		  alert('Error loading orders.')
+		}
+	  });
+	  
+	  $('#orderBtn').on('click', function(){
+	    pizza_key = $('#formName option:selected').attr('value')
+		
+	    var obj = {
+			  name: $('#formName option:selected').text(),
+			  quantity: parseInt($('#formQuantity').val(),10),
+			  price: pizza_prices[pizza_key],
+			  total: pizza_prices[pizza_key] * $('#formQuantity').val()
+		}
+		
+		console.log(obj);
+		console.log(JSON.stringify(obj));
+		
+		$.ajax({
+		  type: 'POST',
+		  url: 'http://localhost:8000/api/orders',
+		  dataTye: 'json',
+		  data: {order: JSON.stringify(obj)},
+		  success: function(resp){
+		    console.log(resp)
+		    tokens = resp['success'].split("_");
+		    $('#tableBody').append('<tr><td>' + tokens[0] + '</td><td>' + tokens[1] + '</td><td>' + tokens[2] + '</td><td>' + tokens[3] + '</td></tr>');
+		  },
+		  error: function(data){
+		    console.log(data)
+		    alert('Error saving order');
+		  }
+		});
+		
+	 
+	  });
+	});
+  </script>
+</head>
+
+<body>
+    <header>Italian Pizza</header>
+    <div class="container">
+      <nav>
+        <caption>
+          Site map
+        </caption>
+        <ol>
+          <li><a href="#pizzaTypes">Types of pizza</a></li>
+          <li><a href="#pizzaOrders">List of orders</a></li>
+          <li><a href="#pizzaForm">Place an order</a></li>
+        </ol>
+      </nav>
+      <h2 class="custom_h2">Types of pizza</h2>
+      <div id="pizzaTypes">
+        <p>List of available pizza</p>
+        <ul>
+          <li>
+            <p>Diavola</p>
+            <img src="res/diavola.jpg" />
+          </li>
+          <li>
+            <p>Quattro formaggi</p>
+            <img src="res/qf.jpg" />
+          </li>
+          <li>
+            <p>Quattro staggioni</p>
+            <img src="res/qs.jpg" />
+          </li>
+          <li>
+            <p>Margherita</p>
+            <img src="res/margherita.jpg" />
+          </li>
+        </ul>
+      </div>
+      <h2 class="custom_h2">List of ordered pizza</h2>
+      <div id="pizzaOrders">
+        <table>
+          <caption name="tableCaption">
+            Orders in queue
+          </caption>
+          <thead>
+            <tr>
+              <td>Name</td>
+              <td>Quantity</td>
+              <td>Price</td>
+              <td>Total</td>
+            </tr>
+          </thead>
+          <tbody id="tableBody">
+
+          </tbody>
+        </table>
+      </div>
+      <h2 class="custom_h2">Place new order</h2>
+      <div id="pizzaForm">
+        <form>
+          <label for="formName">Name</label>
+          <select name="formName" id="formName">
+            <option value="diavola">Diavola</option>
+            <option value="qf">Quatro fromaggi</option>
+            <option value="qs">Quatro staggioni</option>
+            <option value="margherita">Margherita</option>
+          </select>
+          <label for="formQuantity">Quantity</label>
+          <input id="formQuantity" type="text" placeholder="Quantity" />
+
+          <input id="orderBtn" type="button" value="Want my pizza!" />
+        </form>
+      </div>
+    </div>
+    <footer>Designed by ASE students</footer>
+  </body>
+</html>
