@@ -1,0 +1,100 @@
+<!DCOTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.css">
+    
+        <script>
+            $(document).ready(function(){
+                console.log("jquery loaded");
+
+                // set css attributes using jquery
+                $('div').css('color','blue');
+ 
+                // adding and removing classes
+                // $('#p2').addClass("animated fadeOut").
+                // $('#p2').removeClass('fadeOut').fadeToggle();
+
+                // animations
+                $('#p2').hide().show();
+                $('#p3').fadeToggle(1000).fadeToggle(1000).fadeToggle(1000).fadeToggle(1000);
+                  
+
+                // set event handler for click on every button
+                $('button').on("click",function(){
+                     var id = $(this).attr('linked_panel');
+                     $('#'+id).fadeToggle();
+                });
+
+                // DOM traversal functions
+                var temp = $('li').first();
+                console.log(temp);
+                
+		temp = $('li').last()
+                console.log(temp);
+
+		temp = $('li').first().next()
+                console.log(temp);
+
+		temp = $('li').first().next().prev()
+                console.log(temp);
+
+		temp = $('li').first().parent()
+                console.log(temp);
+
+		temp = $('li').first().parent().children()
+                console.log(temp);
+
+		temp = $('li').first().siblings()
+                console.log(temp);
+
+		temp = $('li').eq(2)
+                console.log(temp);
+
+                // jquery filter function
+                $('#btn5').on("click",function(){
+                    $('li').filter('.second_li').css('color','red');
+                })
+            });
+        </script>
+        <style>
+          .panel{
+              display:inline-block;
+          }
+        </style>
+    
+    </head>
+
+    <body>
+        <div>
+            <button linked_panel="p1" id="btn1">b1</button>
+            <button linked_panel="p2" id="btn2">b2</button>
+            <button linked_panel="p3" id="btn3">b3</button>
+            <button linked_panel="p4" id="btn4">b4</button>
+            <button id="btn5">b5</button>
+        </div>
+        <div>
+            <div class="panel" id="p1">panel1</div>
+            <div class="panel" id="p2">panel2</div>
+            <div class="panel" id="p3">panel3</div>
+            <div class="panel" id="p4">panel4</div>
+        </div>
+
+        <ul>
+            <li>first</li>
+            <li>second</li>
+            <li>third</li>
+            <li>
+                <ul>
+                        <li class="second_li">1</li>
+                        <li class="second_li">2</li>
+                        <li class="second_li">3</li>
+                        <li class="second_li">4</li>
+                </ul>
+            </li>
+
+        </ul>
+    </body>
+
+</html>
