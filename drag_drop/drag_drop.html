@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Drag and drop</title>
+	<style>
+		body {
+			padding: 5%;
+		}
+		
+		div {
+			border: 1px solid black;
+			padding: 2%;
+		}
+				
+		ul li {
+			list-style-type: none;
+			display: inline-flex;
+			padding-right: 5%;
+		}
+		
+		canvas { 
+			border: 1px solid black;
+			margin: 5%;
+		}
+	</style>
+</head>
+<body>
+	<h3>Scrambled words</h3>
+	<ul>
+		<li draggable="true" ondragstart="drag(event)" id="w6">at</li>
+		<li draggable="true" ondragstart="drag(event)" id="w7">Multimedia</li>
+		<li draggable="true" ondragstart="drag(event)" id="w5">five</li>
+		<li draggable="true" ondragstart="drag(event)" id="w3">more</li>
+		<li draggable="true" ondragstart="drag(event)" id="w1">Let's</li>
+		<li draggable="true" ondragstart="drag(event)" id="w8">exam.</li>
+		<li draggable="true" ondragstart="drag(event)" id="w4">than</li>
+		<li draggable="true" ondragstart="drag(event)" id="w2">get</li>
+	</ul>
+	
+	<div ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+	
+	<br>
+	<h3>Move image from one canvas to the other.</h3>
+	<p>Initially, the image is drawn on the canvas</p>
+	<canvas id="src" draggable="true" ondragstart="drag(event)" ondrop="dropCanvas(event)" ondragover="allowDrop(event)"></canvas>
+	<canvas id="dst" draggable="true" ondragstart="drag(event)" ondrop="dropCanvas(event)" ondragover="allowDrop(event)"></canvas>
+	
+	<script>
+		// drag and drop on text nodes 
+		// some of the code will be reused further
+		function drag(ev) {
+			ev.dataTransfer.setData("text", ev.target.id);
+			ev.dataTransfer.effectAllowed = "move"
+		}
+		
+		function allowDrop(ev) {
+			ev.preventDefault();
+			ev.dataTransfer.dropEffect = "move"
+		}
+			
+		var adding_order = "";
+		function drop(ev) {
+			ev.preventDefault();
+			
+			var id = ev.dataTransfer.getData("text");
+			adding_order += id;
+			
+			// gray out the words already used
+			var elem = document.getElementById(id);
+			elem.style.pointerEvents = "none";
+			elem.style.opacity = 0.5;
+			
+			var node = document.createTextNode(elem.innerText + " ")
+			ev.target.appendChild(node);
+			
+			// check if the order is correct and let the user know
+			if(adding_order.includes("w1") && adding_order.includes("w2") && adding_order.includes("w3") && adding_order.includes("w4") &&
+				adding_order.includes("w5") && adding_order.includes("w6") && adding_order.includes("w7") && adding_order.includes("w8")) {
+					if( adding_order == "w1w2w3w4w5w6w7w8") {
+						ev.target.style.backgroundColor = "lime";
+					}
+					else
+					{
+						ev.target.style.backgroundColor = "salmon";
+					}
+			}
+		}
+		// end of drag and drop on text nodes 
+		
+		// draw image on canvas section 
+		var s_canvas = document.getElementById("src");
+		var d_canvas = document.getElementById("dst");
+		var s_ctx = s_canvas.getContext("2d");
+		
+		var img = new Image();
+		img.onload = drawOnCanvas;
+		img.src = "melon.jpg";
+						
+		function drawOnCanvas() {
+			s_canvas.width = this.width;
+			d_canvas.width = this.width;
+			s_canvas.height = this.height;
+			d_canvas.height = this.height;
+			
+			s_ctx.drawImage(img, 0, 0, this.naturalWidth, this.naturalHeight);
+		}
+		// end of draw image on canvas section 
+		
+		// drag and drop on canvas nodes 
+		function dropCanvas(ev) {
+			ev.preventDefault();
+			
+			var source_id = ev.dataTransfer.getData("text");
+			var source_canvas = document.getElementById(source_id);
+			
+			var dest_id = ev.target.id;
+			var dest_canvas = document.getElementById(dest_id);
+
+			var image_source = source_canvas.toDataURL("image/jpg");
+			var image_source_length = image_source.length;
+
+			var img = new Image();
+			img.src = image_source
+			
+			dest_canvas.getContext("2d").drawImage(img, 0, 0);
+			var dest_source = dest_canvas.toDataURL("image/jpg");
+			var image_dest_length = dest_source.length;
+
+			if (image_source_length == image_dest_length) {
+				source_canvas.getContext("2d").clearRect(0,0, source_canvas.width, source_canvas.height);
+			}
+		}
+		// end of drag and drop on canvas nodes 
+	
+	</script>
+</body>
+</html>

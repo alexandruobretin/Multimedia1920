@@ -1,0 +1,5 @@
+To be able to drag and drop images in canvas open chrome in insecure mode, similar to the ajax lab:
+
+1. Navigate to chrome installation path. In windows: C:\Program Files (x86)\Google\Chrome\Application
+2. Run chrome.exe with the following args:
+chrome.exe --user-data-dir="D:/Chrome" --disable-web-security
