@@ -49,12 +49,16 @@ ctx.fillStyle = "rgba(255,0,0,1)";
 ctx.fill();
 
 */
+mouse = {
+	x: undefined,
+	y: undefined
+}
 
 function Circle(x, y, radius, color) {
 	this.x = x;
 	this.y = y;
-	this.dx = Math.random() * 5;
-	this.dy = Math.random() * 5;
+	this.dx = Math.random() * 2;
+	this.dy = Math.random() * 2;
 	this.color = color;
 	this.radius = radius;
 	
@@ -78,6 +82,18 @@ function Circle(x, y, radius, color) {
 		this.x += this.dx;
 		this.y += this.dy;
 		
+		if(mouse.x - this.x < 50 && mouse.x - this.x > -50 && mouse.y - this.y < 50 && mouse.y - this.y > -50)
+		{
+			if(this.radius < 80)
+			{
+				this.radius += 5;
+			}
+		}
+		else if(this.radius > radius)
+		{
+			this.radius -=1;
+		}
+		
 		this.draw();
 	}
 }
@@ -85,20 +101,25 @@ function Circle(x, y, radius, color) {
 var radius = 30;
 var bubbles = [];
 
-for(var i=0; i<100; i++){
-	var x = Math.random() * (window.innerWidth - 2 * radius) + radius;
-	var y = Math.random() * (window.innerHeight - 2 * radius) + radius;
+function init(){ 
+	bubbles = [];
 	
-	var r = Math.random() * 255;
-	var g = Math.random() * 255;
-	var b = Math.random() * 255;
-	var color = "rgba(" + r +"," + b+"," + g+ ", 0.5)";
-	
-	var each = new Circle(x,y,radius, color);
-	each.draw();
-	
-	bubbles.push(each);
+	for(var i=0; i<100; i++){
+		var x = Math.random() * (window.innerWidth - 2 * radius) + radius;
+		var y = Math.random() * (window.innerHeight - 2 * radius) + radius;
+		
+		var r = Math.random() * 255;
+		var g = Math.random() * 255;
+		var b = Math.random() * 255;
+		var color = "rgba(" + r +"," + b+"," + g+ ", 0.5)";
+		
+		var each = new Circle(x,y,radius, color);
+		each.draw();
+		
+		bubbles.push(each);
+	}
 }
+init();
 
 function animate(){
 	requestAnimationFrame(animate);
@@ -111,3 +132,15 @@ function animate(){
 }
 
 animate();
+
+window.addEventListener('mousemove', function(event){
+	mouse.x = event.x;
+	mouse.y = event.y;
+});
+
+window.addEventListener('resize', function(event) {
+	canvas.width = window.innerWidth;
+	canvas.height = window.innerHeight;
+	
+	init();
+});
