@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>HTML5 audio and video player</title>
+    <style>
+        ul {
+            list-style: none;
+        }
+
+        #playlist li {
+            color: tomato;
+            font-size: 20px;
+        }
+
+        #playlist .current-song {
+            color: teal;
+        }
+
+        button{
+            border: none;
+            margin-left: 2%;
+            border-radius: 5px;
+            background-color: teal;
+            color: white;
+            padding: 1%;
+            font-size: 16px;
+        }
+
+        h3 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: tomato;
+            padding: 2%;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="margin: 5%; border: 1px solid black; border-radius: 10px; ">
+        <div style="margin: 3%">
+            <h3 style="text-align: center;">Music</h3>
+            <audio src="" controls id="audioPlayer" style="min-width: 100%;" >
+                Your browser does not support html5.
+            </audio>
+            <h2 style="border-bottom: 1px solid teal; color: teal; padding: 1%">Eminem songs</h2>
+            <ul id="playlist">
+                <li class="current-song" song="Eminem - Lose Yourself.mp3">Lose Yourself</li>
+                <li song="Eminem - Mockingbird.mp3">Mockingbird</li>
+                <li song="Eminem - Not Afraid.mp3">Not Afraid</li>
+            </ul>
+            <br>
+            <br>
+            <hr style="color: teal">
+            <h3 style="text-align: center;">Video</h3>
+            <video id="videoPlayer" controls autoplay style="min-width: 100%;">
+                <source src="video.mp4" type="video/mp4"/>
+            </video>
+            <div style="margin: 2% 0%;">
+                <button id="snapshot" onclick="snapshot()">snapshot</button>
+                <button id="blacknwhite" onclick="blackwhite()">black and white</button>
+                <button id="invert" onclick="invert()">invert</button>
+                <button id="sepia" onclick="sepia()">sepia</button>
+                <button id="default" onclick="no_filter()">no filter</button>
+
+            </div>
+            <canvas id="canvas"></canvas>
+    </div>
+</div>
+    <script>
+
+        function audioPlayer() {
+            var tracks = document.getElementById("playlist").children;
+            var player = document.getElementById("audioPlayer");
+            player.src = tracks[0].getAttribute("song");
+
+            var current = 0;
+            for (var counter = 0; counter < tracks.length; counter++) {
+                tracks[counter].addEventListener("click", function () {
+                    player.src = this.getAttribute("song");
+
+                    for (var index = 0; index < tracks.length; index++) {
+                        tracks[index].classList.remove('current-song');
+
+                        if (tracks[index] == this) {
+                            current = index;
+                        }
+                    }
+
+                    this.classList.add("current-song");
+                    player.play();
+                });
+            }
+
+            document.getElementById("audioPlayer").addEventListener("ended", function () {
+                current++;
+                if (current == tracks.length) {
+                    current = 0;
+                }
+
+                for (var index = 0; index < tracks.length; index++) {
+                    tracks[index].classList.remove('current-song');
+                }
+
+                tracks[current].classList.add("current-song");
+                
+                player.src = tracks[current].getAttribute("song");
+                player.play();
+            });
+        }
+
+        audioPlayer();
+
+        var videoPlayer = document.getElementById("videoPlayer");
+        
+        function snapshot(){
+            console.log('snapshot')
+
+            var canvas = document.getElementById('canvas');
+            var context = canvas.getContext('2d');
+
+            context.fillRect(0, 0, canvas.width, canvas.height);
+            context.drawImage(videoPlayer, 0, 0, canvas.width, canvas.height );
+        };
+
+        function blackwhite(){
+            console.log('black n white')
+            videoPlayer.style.filter = 'grayscale(100%)';
+        };
+
+        function invert(){
+            console.log('invert')
+            videoPlayer.style.filter = 'invert(100%)';
+        };      
+
+        function sepia(){
+            console.log('sepia')
+            videoPlayer.style.filter = 'sepia(100%)';
+        };       
+
+        function no_filter(){
+            console.log('default')
+            videoPlayer.style.filter = 'none';
+        };       
+
+    </script>
+</body>
+
+</html>
