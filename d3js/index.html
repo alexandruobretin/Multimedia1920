@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset='utf-8'>
+	<style>
+		svg {
+			margin: 5%;
+			background-color: beige;
+		}
+	</style>
+</head>
+
+<body>
+	<svg></svg>
+	<script src="https://d3js.org/d3.v5.js"></script>
+	<script>
+		var dataset = [
+			{ 'name': 'Mihai', 'grade': 10 },
+			{ 'name': 'Calin', 'grade': 5 },
+			{ 'name': 'Andreea', 'grade': 10 },
+			{ 'name': 'Corina', 'grade': 6 },
+			{ 'name': 'Flavia', 'grade': 8 },
+			{ 'name': 'Matei', 'grade': 9 },
+			{ 'name': 'Bogdan', 'grade': 5 },
+			{ 'name': 'Monica', 'grade': 4 },
+			{ 'name': 'Alin', 'grade': 8 }];
+
+		var title = "Grades at Multimedia exam"
+		var xAxisName = "Grade"
+		var svg_width = 500, svg_height = 500, padding = 5, margin = 50;
+		var bar_width = svg_width / dataset.length;
+
+		var svg = d3.select('svg').attr('width', svg_width + 2 * margin).attr('height', svg_height + 2 * margin);
+
+		var max_grade = d3.max(dataset.map(n => n.grade))
+		var x_scale = d3.scaleBand().domain(dataset.map(n => n.name)).range([0, svg_width]);
+		var y_scale = d3.scaleLinear().domain([0, max_grade]).range([svg_height, 0]);
+
+		var x_axis = d3.axisBottom().scale(x_scale);
+		var y_axis = d3.axisLeft().scale(y_scale);
+
+		svg.append('g').attr('transform', 'translate(' + margin + ',' + margin + ')').call(y_axis);
+		svg.append('g').attr('transform', 'translate(' + (margin + padding) + ',' + (svg_height + margin) + ')').call(x_axis).selectAll('.domain, .tick line').remove();;
+		svg.append('g').append('text').attr('class', 'axis-label').attr('x', svg_width / 2).attr('y', svg_height + 2 * margin - padding).attr('fill', 'tomato').text('Students');
+		svg.append('g').append('text').attr('class', 'axis-label').attr('x', margin / 2).attr('y', margin - 2 * padding).attr('fill', 'tomato').text('Grades');
+		svg.append('g').append('text').attr('class', 'title').attr('y', margin / 2).attr('x', svg_width / 2 - margin).attr('fill', 'tomato').attr('font-size', 20).text(title);
+
+		var barChart = svg.selectAll('rect')
+			.data(dataset)
+			.enter()
+			.append('rect')
+			.attr('y', function (d) { return y_scale(d['grade']) + margin })
+			.attr('x', function (d, i) { return i * bar_width + margin + padding })
+			.attr('height', function (d) { return (svg_height - y_scale(d['grade'])) })
+			.attr('width', bar_width - padding)
+			.style('fill', 'rgba(112,236,100,0.5)'); 	
+	</script>
+</body>
+
+</html>
