@@ -45,7 +45,8 @@
 	<p>Initially, the image is drawn on the canvas</p>
 	<canvas id="src" draggable="true" ondragstart="drag(event)" ondrop="dropCanvas(event)" ondragover="allowDrop(event)"></canvas>
 	<canvas id="dst" draggable="true" ondragstart="drag(event)" ondrop="dropCanvas(event)" ondragover="allowDrop(event)"></canvas>
-	
+	<br>
+	<button onclick="save()">Save</button>
 	<script>
 		// drag and drop on text nodes 
 		// some of the code will be reused further
@@ -132,7 +133,22 @@
 			}
 		}
 		// end of drag and drop on canvas nodes 
-	
+		function save()
+		{
+			var isrc = s_canvas.toDataURL('image/jpg');
+			console.log(isrc)
+			var el = document.createElement('a');
+			el.setAttribute('download', 'melon.jpg');
+			el.setAttribute('href', isrc);
+			
+			// save a text file
+			// el.setAttribute('download', 'melon.txt');
+			// var text = "Some random tex";
+			// el.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+			el.click();
+			
+			delete el;
+		}
 	</script>
 </body>
 </html>
